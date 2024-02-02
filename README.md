@@ -43,6 +43,7 @@ command to run if program contains helper info
 Contributors names and contact info
 
 * [Jason Ang](https://www.linkedin.com/in/jasonang84/)
+* [Abraham Stefanos](https://www.linkedin.com/in/abrahamstefanos/)
 
 ## Version History
 
