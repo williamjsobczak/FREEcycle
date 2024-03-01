@@ -11,7 +11,9 @@ FOR any private individual, business, or other institution/entity WHO would like
 ### Dependencies
 
 * Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* [Node.js]: (https://nodejs.org/)
+* [Node.js](https://nodejs.org/)
+* [React](https://react.dev/)
+* [PostgreSQL](https://www.postgresql.org/)
 
 ### Installing
 
@@ -19,15 +21,19 @@ FOR any private individual, business, or other institution/entity WHO would like
 * Any modifications needed to be made to files/folders
 * npm install node
 
+```
+npm install
+```
+```
+npm i -D react-router-dom@latest
+```
+
 ### Executing program
 
 * How to run the program
 * Step-by-step bullets
 *  To run react app (must be in freecycle directory)
-```
-npm install
-npm i -D react-router-dom@latest
-```
+
 ```
 npm start
 ```
