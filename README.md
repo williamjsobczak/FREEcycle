@@ -26,6 +26,7 @@ FOR any private individual, business, or other institution/entity WHO would like
 *  To run react app (must be in freecycle directory)
 ```
 npm install
+npm i -D react-router-dom@latest
 ```
 ```
 npm start
