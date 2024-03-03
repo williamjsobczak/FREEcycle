@@ -1,7 +1,10 @@
 # FREEcycle
 
-Perfect platform to Give back to your Comunnity!
-![Logo Alt Text](/images/logo.png)
+<div align="center">
+  <img src="client/public/freecyclelogo.png" alt="Logo Alt Text">
+  <br>
+  <em>Perfect platform to Give back to your Community!</em>
+</div>
 
 
 ## Description
