@@ -32,6 +32,9 @@ git clone https://github.com/williamjsobczak/FREEcycle
 npm install
 ```
 ```
+npm install react-scripts
+```
+```
 npm i -D react-router-dom@latest
 ```
 ```
