@@ -37,7 +37,9 @@ npm i -D react-router-dom@latest
 ```
 npm i express-fileupload
 ```
-
+```
+npm install -g nodemon
+```
 
 
 ### Executing program
