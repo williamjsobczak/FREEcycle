@@ -1,10 +1,46 @@
-# Getting Started with Create React App
+# FREEcycle
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Perfect platform to Give back to your Comunnity!
+![Logo Alt Text](/images/logo.png)
 
-## Available Scripts
 
-In the project directory, you can run:
+## Description
+
+FOR any private individual, business, or other institution/entity WHO would like to provide or receive non-monetary donations, THE FREEcycle is a location-specific web-based social platform THAT allows users to create an account to post their own donations or message the author of other posts to receive items free of charge. UNLIKE other legacy sales-based platforms, OUR product is built to show users posts of items they didn’t know they needed with a robust user network while storing no monetary transactions.
+
+## Getting Started
+
+
+### Installing
+
+* Make sure you have [Node](https://nodejs.org/en), [React](https://react.dev/), [Postgresql](https://www.postgresql.org/) installed
+```
+git clone https://github.com/williamjsobczak/FREEcycle
+```
+
+
+### Dependencies
+
+* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
+* install packages from json
+* react router for webpages
+* express for request connection
+```
+npm install
+```
+```
+npm i -D react-router-dom@latest
+```
+```
+npm i express-fileupload
+```
+
+
+
+### Executing program
+
+*  To start react: npm start
+*  to start server: nodemon start
 
 ### `npm start`
 
@@ -13,6 +49,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+```
+npm start
+```
+
+```
+nodemon start
+```
+
 
 ### `npm test`
 
@@ -29,38 +73,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
 ### Deployment
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
@@ -69,12 +81,40 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
+## Help
 
+Any advise for common problems or issues.
+```
+command to run if program contains helper info
+```
 
+## Authors
 
+Contributors names and contact info
 
-Requirements:
-npm i -D react-router-dom@latest
-npm i express-fileupload
+* [Jason Ang](https://www.linkedin.com/in/jasonang84/)
+* [Abraham Stefanos](https://www.linkedin.com/in/abrahamstefanos/)
+* [William Sobczak]()
+* [Endrit Bendrit]()
 
-to start server: nodemon start
+## Version History
+
+* 0.2
+    * Various bug fixes and optimizations
+    * See [commit change]() or See [release history]()
+* 0.1
+    * Initial Release
+
+## License
+
+This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+
+## Acknowledgments
+
+Inspiration, code snippets, etc.
+* [awesome-readme](https://github.com/matiassingers/awesome-readme)
+* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+* [dbader](https://github.com/dbader/readme-template)
+* [zenorocha](https://gist.github.com/zenorocha/4526327)
+* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+
