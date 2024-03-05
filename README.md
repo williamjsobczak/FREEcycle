@@ -24,37 +24,28 @@ git clone https://github.com/williamjsobczak/FREEcycle
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* install packages from json
-* react router for webpages
-* express for request connection
-* Installing [tailwindcss](https://tailwindcss.com/docs/guides/create-react-app) for the first time
+* check package.json for more info
+
+```
+cd client
+```
 ```
 npm install
 ```
+open a new terminal
 ```
-npm install react-scripts
-```
-```
-npm i -D react-router-dom@latest
+cd server
 ```
 ```
-npm i express-fileupload
+npm install
 ```
-```
-npm install -g nodemon
-```
-```
-npm install bcrypt
-```
+
 
 
 ### Executing program
 
 *  To start react: npm start
 *  to start server: nodemon start
-
-### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -64,7 +55,11 @@ You may also see any lint errors in the console.
 ```
 npm start
 ```
+Runs the server in the development mode.\
+Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
 
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 ```
 nodemon start
 ```
