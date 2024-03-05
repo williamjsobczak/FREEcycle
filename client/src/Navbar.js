@@ -10,6 +10,9 @@ const navigation = [
   { name: 'sign in', href: '/sign-in', current: false },
   { name: 'product design', href: '/product-description', current: false },
   { name: 'post item', href: '/post-item', current: false },
+  { name: 'Create Post', href: '/create_post', current: false },
+  { name: 'Create Account', href: '/create_account', current: false },
+  { name: 'Login', href: '/login', current: false },
 
 
 ]
