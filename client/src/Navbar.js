@@ -14,17 +14,17 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/create_post" className="hover:text-gray-300">
+          <Link to="/login" className="hover:text-gray-300">
             Login
           </Link>
         </li>
         <li>
-          <Link to="/login" className="hover:text-gray-300">
+          <Link to="/create_account" className="hover:text-gray-300">
             Create Account
           </Link>
         </li>
         <li>
-          <Link to="/create_account" className="hover:text-gray-300">
+          <Link to="/create_post" className="hover:text-gray-300">
             Create Post
           </Link>
         </li>
