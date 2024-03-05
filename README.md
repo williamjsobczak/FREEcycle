@@ -28,8 +28,12 @@ git clone https://github.com/williamjsobczak/FREEcycle
 * install packages from json
 * react router for webpages
 * express for request connection
+* Installing [tailwindcss](https://tailwindcss.com/docs/guides/create-react-app) for the first time
 ```
 npm install
+```
+```
+npm install react-scripts
 ```
 ```
 npm i -D react-router-dom@latest
@@ -39,6 +43,9 @@ npm i express-fileupload
 ```
 ```
 npm install -g nodemon
+```
+```
+npm install bcrypt
 ```
 
 

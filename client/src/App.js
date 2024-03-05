@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import CreatePostPage from './pages/CreatePostPage';
+import SignInPage from './pages/SignInPage';
+import ProductDescriptionPage from './pages/ProductDescriptionPage';
+import PostItem from './components/PostItem';
 // npm i -D react-router-dom@latest
 function App() {
   return (
@@ -17,6 +20,10 @@ function App() {
           </Route>
           <Route path="/about" element={<AboutPage />} />
           <Route path="/create_post" element={<CreatePostPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/product-description" element={<ProductDescriptionPage />} />
+          <Route path="/post-item" element={<PostItem />} />
+
         </Routes>
         </Layout>
       </BrowserRouter>

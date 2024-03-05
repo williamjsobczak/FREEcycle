@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
 function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -64,6 +65,9 @@ function CreatePostPage() {
         <button type="submit" style={{ padding: '5px 10px', cursor: 'pointer' }}>Upload</button>
       </form>
     </div>
+
+    
+
   );
 }
 

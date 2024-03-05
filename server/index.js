@@ -3,6 +3,9 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db")
 const fileUpload = require("express-fileupload");
+const bcrypt = require("bcrypt")
+require('dotenv').config();
+
 
 //middleware
 app.use(cors());
@@ -12,11 +15,29 @@ app.use(fileUpload());
 
 //ROUTES//
 
+
+app.post("/login", async(req,res) => {
+    try {
+        console.log(req.body);
+        const { username, password, email } = req.body;
+
+        
+        
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 //create a user
 app.post("/create_account", async(req, res) => {
     try {
         console.log(req.body);
         const { username, password, email, zip_code } = req.body;
+
+        // check user with email and username isn't already existing
+        
+
+
         const newUser = await pool.query(
             "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
             [username, password, email, zip_code]
