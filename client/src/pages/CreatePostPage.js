@@ -1,32 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import { toast } from 'react-toastify';
 
-function CreatePostPage() {
+function CreatePostPage({isAuthenticated, checkAuthenticated}) {
   const [title, setTitle] = useState("");
   const [userId, setUserId] = useState("");
   const [file, setFile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('userId', userId);
-    formData.append('pic', file);
-
+    formData.append("title", title);
+    formData.append("image", file); // Assuming 'file' is a File object
+  
     try {
-      const response = await fetch('http://localhost:5000/create_post', {
-        method: 'POST',
-        body: formData
+      const response = await fetch("http://localhost:5000/Posting/create-post", {
+        method: "POST",
+        headers: {
+          "jwt_token": localStorage.token, // It's common to use the Authorization header instead
+        },
+        body: formData,
       });
-      const data = await response.json();
-      console.log(data); // Handle response from server
-      setUploadSuccess(true);
-    } catch (error) {
-      console.error('Error:', error);
+  
+      const responseJson = await response.json();
+  
+      if (responseJson.uploadSuccess) {
+        toast.success("Created Item Post Successfully");
+      } else {
+        toast.error("Unable to create Item Post");
+      }
+    } catch (err) {
+      console.error(err.message);
+      toast.error("An error occurred");
     }
   };
+  
+  
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
 
   return (
     <div style={{ maxWidth: '500px', margin: '0 auto' }}>
@@ -43,7 +57,7 @@ function CreatePostPage() {
             required 
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        {/* <div style={{ marginBottom: '10px' }}>
           <label htmlFor="userId">User ID:</label>
           <input 
             type="text" 
@@ -52,7 +66,7 @@ function CreatePostPage() {
             onChange={(e) => setUserId(e.target.value)} 
             required 
           />
-        </div>
+        </div> */}
         <div style={{ marginBottom: '10px' }}>
           <label htmlFor="pic">Choose Image:</label>
           <input 
@@ -64,6 +78,7 @@ function CreatePostPage() {
         </div>
         <button type="submit" style={{ padding: '5px 10px', cursor: 'pointer' }}>Upload</button>
       </form>
+      
     </div>
 
     

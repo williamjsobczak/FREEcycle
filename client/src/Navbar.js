@@ -1,9 +1,11 @@
-import React from 'react'
 import { Link } from "react-router-dom";
-import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import freecyclelogo from './assets/freecyclelogo.png'
+import React, { Fragment, useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+ 
+
 const navigation = [
   { name: 'Home', href: '/', current: false },
   { name: 'about', href: '/about', current: false },
@@ -17,7 +19,44 @@ const navigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-export default function Navbar() {
+export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated }) {
+
+  const [name, setName] = useState("");
+
+  const getProfile = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/Posting/", {
+        method: "GET",
+        headers: { jwt_token: localStorage.token },
+      });
+
+      const parseData = await res.json();
+
+      setName(parseData[0].username); // name is the first array item
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  
+  const logout = async (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Successfully logged out");
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthenticated();
+    getProfile();
+  }, []);
+
+ 
+
   return (
     <Disclosure as="nav" className="bg-green-600">
       {({ open }) => (
@@ -36,12 +75,13 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
+              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start" >
+                <div className="flex flex-shrink-0 items-center" >
                   <img
                     className="h-8 w-auto"
                     src={freecyclelogo}
                     alt="FREEcycle"
+                    
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -71,8 +111,9 @@ export default function Navbar() {
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
+                    {/* Profile dropdown */}
 
-                {/* Profile dropdown */}
+                {isAuthenticated ?         
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -93,33 +134,34 @@ export default function Navbar() {
                     leave="transition ease-in duration-75"
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
-                  >
+                  >                 
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/profile"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Your Profile
+                            {name} Profile
                           </a>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/create_post"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
-                            Settings
+                            Create Post
                           </a>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            onClick={(e) => logout(e)}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            href='/'
                           >
                             Sign out
                           </a>
@@ -128,6 +170,13 @@ export default function Navbar() {
                     </Menu.Items>
                   </Transition>
                 </Menu>
+                : 
+                <div class="space-x-4">
+                  <a href="/sign-in" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Login</a>
+                  <a href="/registration" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition duration-300">Registration</a>
+                </div>
+
+            }
               </div>
             </div>
           </div>

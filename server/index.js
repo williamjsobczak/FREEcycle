@@ -9,46 +9,49 @@ require('dotenv').config();
 
 //middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // allows us use req.body
 app.use(fileUpload());
 
 
 //ROUTES//
 
+app.use("/authentication", require("./routes/jwtAuth"));
+app.use("/Posting", require("./routes/itemPost"));
 
-app.post("/login", async(req,res) => {
-    try {
-        console.log(req.body);
-        const { username, password, email } = req.body;
+
+// app.post("/login", async(req,res) => {
+//     try {
+//         console.log(req.body);
+//         const { username, password, email } = req.body;
 
         
         
-    } catch (err) {
-        console.error(err.message);
-    }
-});
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// });
 
-//create a user
-app.post("/create_account", async(req, res) => {
-    try {
-        console.log(req.body);
-        const { username, password, email, zip_code } = req.body;
+// //create a user
+// app.post("/create_account", async(req, res) => {
+//     try {
+//         console.log(req.body);
+//         const { username, password, email, zip_code } = req.body;
 
-        // check user with email and username isn't already existing
+//         // check user with email and username isn't already existing
+//         // doesn't have this logic
+
+
+//         const newUser = await pool.query(
+//             "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
+//             [username, password, email, zip_code]
+//         );
+
+//         res.json(newUser.rows);
         
-
-
-        const newUser = await pool.query(
-            "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
-            [username, password, email, zip_code]
-        );
-
-        res.json(newUser.rows);
-        
-    } catch (err) {
-        console.error(err.message);
-    }
-})
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// })
 
 // Create a Post
 app.post("/create_post", async (req, res) => {
