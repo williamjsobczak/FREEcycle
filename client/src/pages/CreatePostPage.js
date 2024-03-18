@@ -13,29 +13,30 @@ function CreatePostPage({isAuthenticated, checkAuthenticated}) {
   
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("image", file); // Assuming 'file' is a File object
+    formData.append("pic", file); // Assuming 'file' is a File object
   
     try {
-      const response = await fetch("http://localhost:5000/Posting/create-post", {
-        method: "POST",
-        headers: {
-          "jwt_token": localStorage.token, // It's common to use the Authorization header instead
-        },
-        body: formData,
-      });
+        const response = await fetch("http://localhost:5000/create_post", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.token}`, // Send JWT token in the Authorization header
+            },
+            body: formData,
+        });
   
-      const responseJson = await response.json();
+        const responseJson = await response.json();
   
-      if (responseJson.uploadSuccess) {
-        toast.success("Created Item Post Successfully");
-      } else {
-        toast.error("Unable to create Item Post");
-      }
+        if (response.ok) {
+            toast.success("Created Item Post Successfully");
+        } else {
+            toast.error("Unable to create Item Post");
+        }
     } catch (err) {
-      console.error(err.message);
-      toast.error("An error occurred");
+        console.error(err.message);
+        toast.error("An error occurred");
     }
-  };
+};
+
   
   
   useEffect(() => {

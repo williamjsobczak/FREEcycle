@@ -19,7 +19,7 @@ export default function SignInPage({setAuth}) {
     try {
       const body = { email, password };
       const response = await fetch(
-        "http://localhost:5000/authentication/login",
+        "http://localhost:5000/login",
         {
           method: "POST",
           headers: {
