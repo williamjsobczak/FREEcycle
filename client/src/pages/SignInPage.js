@@ -19,7 +19,7 @@ export default function SignInPage({setAuth}) {
     try {
       const body = { email, password };
       const response = await fetch(
-        "http://localhost:5000/login",
+        "http://localhost:5000/authentication/login",
         {
           method: "POST",
           headers: {
@@ -82,11 +82,7 @@ export default function SignInPage({setAuth}) {
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Password
                 </label>
-                <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
-                  </a>
-                </div>
+
               </div>
               <div className="mt-2">
                 <input
@@ -114,7 +110,7 @@ export default function SignInPage({setAuth}) {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
-            <a href="/registration" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <a href="/authentication/registration" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Create an Account
             </a>
           </p>

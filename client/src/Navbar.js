@@ -8,8 +8,8 @@ import { toast } from 'react-toastify';
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
-  { name: 'about', href: '/about', current: false },
-  { name: 'post item', href: '/create_post', current: false },
+  { name: 'About', href: '/about', current: false },
+  { name: 'Post Item', href: '/create_post', current: false },
 
 
 ]
@@ -170,8 +170,8 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                 </Menu>
                 : 
                 <div class="space-x-4">
-                  <a href="/login" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Login</a>
-                  <a href="/registration" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition duration-300">Registration</a>
+                  <a href="/authentication/login" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Login</a>
+                  <a href="/authentication/registration" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition duration-300">Registration</a>
                 </div>
 
             }

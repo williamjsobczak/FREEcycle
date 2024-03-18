@@ -78,12 +78,12 @@ function App() {
             <ProfilePage isAuthenticated={isAuthenticated} checkAuthenticated={checkAuthenticated} /> : 
             <SignInPage setAuth={setAuth} />
             }  />
-          <Route path="/login" element={
+          <Route path="/authentication/login" element={
           isAuthenticated ? 
             <Navigate to="/" /> : 
             <SignInPage setAuth={setAuth} />
             }  />
-          <Route path="/registration" element={
+          <Route path="/authentication/registration" element={
           isAuthenticated ? 
             <Navigate to="/" /> : 
             <RegistrationPage setAuth={setAuth} />
