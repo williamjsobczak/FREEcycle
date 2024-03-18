@@ -24,7 +24,7 @@ app.use(fileUpload());
 
 
 //ROUTES
-app.use("/authentication/register", require("./routes/jwtAuth"));
+app.use("/authentication/registration", require("./routes/jwtAuth"));
 app.use("/Posting", require("./routes/itemPost"));
 
 //login
@@ -60,9 +60,9 @@ app.post("/login", async (req, res) => {
 
 
 // create a user
-app.post("/authentication/register", async (req, res) => {
+app.post("/authentication/registration", async (req, res) => {
     try {
-        const { email, password, username, zip_code } = req.body;
+        const { username, password, email, zip_code } = req.body;
 
         // Add any necessary validation or checks here
 
@@ -71,14 +71,16 @@ app.post("/authentication/register", async (req, res) => {
 
         // Insert the user into the database
         const newUser = await pool.query(
-            "INSERT INTO users (email, password, username, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
-            [email, hashedPassword, username, zip_code]
+            "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
+            [username, hashedPassword, email, zip_code]
         );
 
         // Assuming you want to send back a JWT token upon successful registration
         // You can customize this response based on your application's needs
         // Here, we are sending back the user ID and username
-        res.json({ userId: newUser.rows[0].id, username: newUser.rows[0].username }); 
+        const jwtToken = generateJWTToken(newUser.rows[0].id);
+        res.json({ jwtToken });
+ 
 
     } catch (err) {
         console.error(err.message);

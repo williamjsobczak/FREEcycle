@@ -9,45 +9,49 @@ export default function RegistrationPage({ setAuth }) {
     zip_code: ''
   });
 
-  const { email, password, username, zip_code } = inputs;
+  const { username, password, email, zip_code } = inputs;
 
   const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
-  const onSubmitForm = async e => {
-    e.preventDefault();
-
-    try {
-        const body = { email, password };
+    const onSubmitForm = async e => {
+      e.preventDefault();
+      try {
+        const body = { username, password, email, zip_code };
         const response = await fetch(
-            "http://localhost:5000/login",
-            {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(body)
-            }
+          'http://localhost:5000/authentication/registration',
+          {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          }
         );
-
-        const parseRes = await response.json();
-
-        if (response.ok) {
-            localStorage.setItem("token", parseRes.jwtToken);
-            setAuth(true);
-            toast.success("Logged in Successfully");
-        } else {
-            setAuth(false);
-            toast.error(parseRes);
+    
+        if (!response.ok) {
+          // If the response status is not in the 2xx range, handle the error
+          const errorMessage = await response.text();
+          throw new Error(errorMessage);
         }
-    } catch (err) {
-        console.error(err.message);
-        toast.error("Error: Unable to sign in");
-    }
-};
-  
-
-
+    
+        const parseRes = await response.json();
+    
+        if (parseRes.jwtToken) {
+          localStorage.setItem('token', parseRes.jwtToken);
+          setAuth(true);
+          toast.success('Registered Successfully');
+        } else {
+          setAuth(false);
+          toast.error('Error: Unable to register');
+        }
+      } catch (err) {
+        console.error('Error:', err.message);
+        // Handle error cases where the server returns a non-2xx status code or an error message
+        toast.error('Error: Unable to register');
+      }
+    };
+    
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
