@@ -18,6 +18,53 @@ app.use(fileUpload());
 // ROUTES
 app.use("/authentication", require("./routes/jwtAuth"));
 app.use("/Posting", require("./routes/itemPost"));
+// app.use("/images", require("./routes/imageRoutes"));
+// Backend Route to Fetch Images by postId
+app.get('/images/:postId', async (req, res) => {
+  try {
+    const { postId } = req.params;
+   
+    // Query the database to retrieve the image data for the given postId
+    const result = await pool.query('SELECT attached_photo FROM posts WHERE post_id = $1', [postId]);
+
+    // Check if an image was found for the given postId
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    // Extract the image data from the database result
+    const imageData = result.rows[0].attached_photo;
+    const base64ImageData = imageData.toString('base64');
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Embedded Image</title>
+      </head>
+      <body>
+        <h1>Embedded Image</h1>
+        <img src="data:image/;base64,${base64ImageData}" alt="Embedded Image">
+      </body>
+      </html>
+    `;
+
+
+    // Serve the image data as a response with the appropriate content type
+    res.writeHead(200, {
+      'Content-Type': 'text/html', // Adjust content type based on your image format
+      'Worked': 'yes'
+    });
+    res.end(htmlContent);
+ 
+
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 
 // Function to generate JWT token
 function generateJWTToken(userId) {

@@ -1,63 +1,58 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
-const products = [
-  {
-    id: 1,
-    name: 'Earthen Bottle',
-    href: '#',
-    price: '$48',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-  },
-  {
-    id: 2,
-    name: 'Nomad Tumbler',
-    href: '#',
-    price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-  },
-  {
-    id: 3,
-    name: 'Focus Paper Refill',
-    href: '#',
-    price: '$89',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-  },
-  {
-    id: 4,
-    name: 'Machined Mechanical Pencil',
-    href: '#',
-    price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  // More products...
-]
+function HomePage() {
+  const [photos, setPhotos] = useState([]);
 
-export default function HomePage() {
+  useEffect(() => {
+    // List of postIds for which you want to fetch images
+    const postIds = [6, 7, 9]; // Example: Replace with actual list of postIds
+
+    // Fetch photos for each postId from the backend when the component mounts
+    const fetchPhotos = async () => {
+      try {
+        const photoData = [];
+        for (const postId of postIds) {
+          const response = await fetch(`http://localhost:5000/images/${postId}`); // Adjust the endpoint URL
+          console.log(typeof response);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch photos for postId ${postId}`);
+          }
+          const dataBuffer = await response.buffer();
+          photoData.push(...dataBuffer); // Concatenate fetched photos for each postId
+        }
+        setPhotos(photoData); // Set the fetched photos in state
+      } catch (error) {
+        console.error('Error fetching photos:', error.message);
+      }
+    };
+
+    fetchPhotos();
+  }, []); // Empty dependency array to run the effect only once when the component mounts
+
+  // Function to convert bytea data to a Blob
+  const byteaToBlob = (bytea) => {
+    const binaryString = window.atob(bytea);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return new Blob([bytes], { type: 'image/*' }); // Adjust the type based on your image format
+  };
+
   return (
-    <div className="bg-white">
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <h2 className="sr-only">Products</h2>
-
-      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {products.map((product) => (
-          <a key={product.id} href={product.href} className="group">
-            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-              <img
-                src={product.imageSrc}
-                alt={product.imageAlt}
-                className="h-full w-full object-cover object-center group-hover:opacity-75"
-              />
-            </div>
-            <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-            <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
-          </a>
+    <div>
+      <h1>Photos</h1>
+      <div className="photo-container">
+        {/* Map over the photos and render each photo */}
+        {photos.map(photo => (
+          <div key={photo.id} className="photo-item">
+            {/* Render the image using the blob URL */}
+            <img src={URL.createObjectURL(byteaToBlob(photo.data))} alt={photo.alt} />
+          </div>
         ))}
       </div>
     </div>
-  </div>
-  )
+  );
 }
+
+export default HomePage;
