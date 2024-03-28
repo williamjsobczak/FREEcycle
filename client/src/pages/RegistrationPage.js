@@ -124,7 +124,7 @@ export default function RegistrationPage({ setAuth }) {
           Already have an account?{' '}
           <a
             className="no-underline border-b border-blue text-blue"
-            href="../sign-in/"
+            href="/authentication/login"
           >
             Log in
           </a>
