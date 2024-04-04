@@ -2,9 +2,25 @@ import React, {useEffect, useState} from 'react'
 import HomePage from './HomePage'
 import CreatePostPage from './CreatePostPage';
 import ListPost from './postlist/ListPost';
+import { toast } from 'react-toastify';
+
 
 export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
     const [name, setName] = useState("");
+    // const [zip_code, setZip_code] = useState("");
+    // const [email, setEmail] = useState("");
+
+    const [inputs, setInputs] = useState({
+      username: '',
+      email: '',
+      password: '',
+      zip_code: ''
+    });
+    const onChange = e =>
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+
+    const { username, password, email, zip_code } = inputs;
+
     const [allPosts, setAllPosts] = useState([]);
     const [postsChange, setPostsChange] = useState(false);
   
@@ -16,15 +32,57 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
         });
   
         const parseData = await res.json();
-  
-        setAllPosts(parseData);
-        console.log(parseData)
-        console.log('nice')
-        setName(parseData[0].username); // name is the first array item
+        // Assuming parseData is an array with at least one element
+        if (parseData.length > 0) {
+          setInputs(prevState => ({
+            ...prevState,
+            username: parseData[0].username,
+            zip_code: parseData[0].zip_code,
+            email: parseData[0].email
+          }));
+        }
+
+        console.log()
+        // setName(parseData[0].username); // name is the first array item
+        // setZip_code(parseData[0].zip_code);
+        // setEmail(parseData[0].email);
       } catch (err) {
         console.error(err.message);
       }
     };
+
+    
+
+    const onSubmitZipCode = async e => {
+      e.preventDefault();
+      try {
+        const body = { email };
+        const response = await fetch(
+          'http://localhost:5000/update-credentials',
+          {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          }
+        );
+    
+        if (!response.ok) {
+          // If the response status is not in the 2xx range, handle the error
+          const errorMessage = await response.text();
+          throw new Error(errorMessage);
+        }
+    
+        const parseRes = await response.json();
+    
+      } catch (err) {
+        console.error('Error:', err.message);
+        // Handle error cases where the server returns a non-2xx status code or an error message
+        toast.error('unable to update zipcode');
+      }
+    };
+
     useEffect(() => {
         checkAuthenticated();
       }, []);
@@ -43,16 +101,16 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
   <div class="grid grid-cols-1 md:grid-cols-3">
     <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
       <div>
-        <p class="font-bold text-gray-700 text-xl">22</p>
-        <p class="text-gray-400">Friends</p>
+        <p class="font-bold text-gray-700 text-xl">jkl</p>
+        <p class="text-gray-400">bobby</p>
       </div>
       <div>
-           <p class="font-bold text-gray-700 text-xl">10</p>
-        <p class="text-gray-400">Photos</p>
+           <p class="font-bold text-gray-700 text-xl">klj</p>
+        <p class="text-gray-400">smurday</p>
       </div>
           <div>
-           <p class="font-bold text-gray-700 text-xl">89</p>
-        <p class="text-gray-400">Comments</p>
+           <p class="font-bold text-gray-700 text-xl">klj</p>
+        <p class="text-gray-400">dasf</p>
       </div>
     </div>
     <div class="relative">
@@ -79,10 +137,43 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
 
   <div class="mt-20 text-center border-b pb-12">
     <h1 class="text-4xl font-medium text-gray-700">{name} <span class="font-light text-gray-500">27</span></h1>
-    <p class="font-light text-gray-600 mt-3">Bucharest, Romania</p>
-
-    <p class="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
-    <p class="mt-2 text-gray-500">University of Computer Science</p>
+    <p class="font-light text-gray-600 mt-3">Bob's Burger</p>
+    <p class="mt-8 text-gray-500">EMAIL: {email}</p>
+    <p class="mt-2 text-gray-500">Zip Code: {zip_code}</p>
+    <form onSubmit={onSubmitZipCode}>
+    <input
+              type="text"
+              className="mt-8 text-gray-500"
+              name="email"
+              value={email}
+              placeholder="Email"
+              onChange={e => onChange(e)}
+            />
+    <input
+              type="text"
+              className="mt-8 text-gray-500"
+              name="zip_code"
+              value={zip_code}
+              placeholder="zip_code"
+              onChange={e => onChange(e)}
+            />
+      <input
+              type="text"
+              className="mt-8 text-gray-500"
+              name="username"
+              value={username}
+              placeholder="username"
+              onChange={e => onChange(e)}
+            />
+          <button
+              type="submit"
+              className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
+            >
+              Update crednetials
+            </button>
+    </form>
+   
+      
   </div>
 
   <div class="mt-12 flex flex-col justify-center">

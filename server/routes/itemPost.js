@@ -10,15 +10,19 @@ const pool = require("../db");
 //all Item Post and name
 router.get("/", authorize, async (req, res) => {
   try {
-
+    if (!req.user) {
+      console.log(req.user)
+      return 
+    }
     // get todo name and description for a specified user id
     const user = await pool.query(
-      "SELECT u.username, p.post_id, p.title, p.attached_photo, p.created_at FROM users AS u LEFT JOIN posts AS p ON u.user_id = p.user_id WHERE u.user_id = $1",
-      [req.user.id]
+      "SELECT users.username, users.email, users.zip_code FROM users WHERE users.user_id = $1",
+      [req.user]
     );
-
+    // console.log(user.rows)
     res.json(user.rows);
   } catch (err) {
+    // console.log('bob')
     console.error(err.message);
     res.status(500).send("Server error");
   }

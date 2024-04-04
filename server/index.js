@@ -71,6 +71,49 @@ function generateJWTToken(userId) {
     return jwt.sign({ userId }, jwtSecret, { expiresIn: '1h' });
   }
 
+//update-zipcode
+app.post("/update-credentials", async (req, res) => {
+  try {
+      const { username, password, zip_code } = req.body;
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insert user into the database
+      const newUser = await pool.query(
+          "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
+          [username, hashedPassword, email, zip_code]
+      );
+
+      // Retrieve user_id based on username
+      const { rows } = await pool.query(
+          "SELECT user_id FROM users WHERE username = $1",
+          [username]
+      );
+
+      // Ensure a user_id is found
+      if (rows.length === 0) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
+      const userId = rows[0].user_id;
+
+      // Generate JWT token with user_id
+      const jwtToken = generateJWTToken(userId);
+
+      // Log the token payload for testing
+      const decoded = jwt.verify(jwtToken, jwtSecret);
+      console.log("Token payload after registration:", decoded);
+
+      res.json({ jwtToken });
+
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+  }
+});
+
+
 // Registration
 app.post("/authentication/registration", async (req, res) => {
     try {
