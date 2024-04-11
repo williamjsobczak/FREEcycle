@@ -51,37 +51,49 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
       }
     };
 
-    
+      // Function to focus input field
+  const focusInput = (inputRef) => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
-    const onSubmitZipCode = async e => {
+  // References for input fields
+  const emailRef = React.useRef(null);
+  const zipCodeRef = React.useRef(null);
+  const usernameRef = React.useRef(null);
+
+    const onSubmitCredentials = async e => {
       e.preventDefault();
       try {
-        const body = { email };
+        const body = { username, email, zip_code };
         const response = await fetch(
-          'http://localhost:5000/update-credentials',
+          'http://localhost:5000/authentication/update-credentials', // Adjusted to the new endpoint
           {
-            method: 'POST',
+            method: 'PUT', // Changed to PUT to match the server-side route
             headers: {
-              'Content-type': 'application/json'
+              'Content-type': 'application/json',
+              'jwt_token': localStorage.token // Make sure the header name matches what your middleware expects
             },
             body: JSON.stringify(body)
           }
         );
     
         if (!response.ok) {
-          // If the response status is not in the 2xx range, handle the error
           const errorMessage = await response.text();
           throw new Error(errorMessage);
         }
     
+        toast.success('Credentials updated successfully!');
         const parseRes = await response.json();
-    
+        // Update the state or perform necessary actions after successful update
       } catch (err) {
         console.error('Error:', err.message);
-        // Handle error cases where the server returns a non-2xx status code or an error message
-        toast.error('unable to update zipcode');
+        toast.error(`Unable to update credentials: ${err.message}`);
       }
     };
+    
+
 
     useEffect(() => {
         checkAuthenticated();
@@ -92,100 +104,90 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
         setPostsChange(false);
       }, [postsChange]);
 
-    return (
-    isAuthenticated ? (
+      return isAuthenticated ? (
         <div className="p-16">
           <div className="p-8 bg-white shadow mt-24">
-          <div class="p-16">
-<div class="p-8 bg-white shadow mt-24">
-  <div class="grid grid-cols-1 md:grid-cols-3">
-    <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
-      <div>
-        <p class="font-bold text-gray-700 text-xl">jkl</p>
-        <p class="text-gray-400">bobby</p>
-      </div>
-      <div>
-           <p class="font-bold text-gray-700 text-xl">klj</p>
-        <p class="text-gray-400">smurday</p>
-      </div>
-          <div>
-           <p class="font-bold text-gray-700 text-xl">klj</p>
-        <p class="text-gray-400">dasf</p>
-      </div>
-    </div>
-    <div class="relative">
-      <div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" viewBox="0 0 20 20" fill="currentColor">
-  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-</svg>
-      </div>
-    </div>
-
-    <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-<button
-  class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
->
-  Connect
-</button>
-    <button
-  class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
->
-  Message
-</button>
-    </div>
-  </div>
-
-  <div class="mt-20 text-center border-b pb-12">
-    <h1 class="text-4xl font-medium text-gray-700">{name} <span class="font-light text-gray-500">27</span></h1>
-    <p class="font-light text-gray-600 mt-3">Bob's Burger</p>
-    <p class="mt-8 text-gray-500">EMAIL: {email}</p>
-    <p class="mt-2 text-gray-500">Zip Code: {zip_code}</p>
-    <form onSubmit={onSubmitZipCode}>
-    <input
-              type="text"
-              className="mt-8 text-gray-500"
-              name="email"
-              value={email}
-              placeholder="Email"
-              onChange={e => onChange(e)}
-            />
-    <input
-              type="text"
-              className="mt-8 text-gray-500"
-              name="zip_code"
-              value={zip_code}
-              placeholder="zip_code"
-              onChange={e => onChange(e)}
-            />
-      <input
-              type="text"
-              className="mt-8 text-gray-500"
-              name="username"
-              value={username}
-              placeholder="username"
-              onChange={e => onChange(e)}
-            />
-          <button
-              type="submit"
-              className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
-            >
-              Update crednetials
-            </button>
-    </form>
-   
+            <div className="p-16">
+              <div className="p-8 bg-white shadow mt-24">
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  {/* Profile Section */}
+                  <div className="relative flex flex-col items-center">
+                    {/* Profile Image */}
+                    <div className="w-48 h-48 bg-indigo-100 rounded-full shadow-2xl flex items-center justify-center text-indigo-500">
+                      {/* Replace with actual profile image if available */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    {/* Profile Info */}
+                    <div className="mt-6 text-center">
+                      <h1 className="text-4xl font-medium text-gray-700">{username}</h1>
+                      <p className="font-light text-gray-600 mt-3">{email}</p>
+                    </div>
+                  </div>
       
-  </div>
-
-  <div class="mt-12 flex flex-col justify-center">
-  <ListPost allPosts={allPosts} setPostsChange={setPostsChange} />
-  </div>
-
-</div>
-</div>
+                  {/* Posts Section */}
+                  <div className="mt-12 flex flex-col justify-center">
+                    {/* Display a list of posts - assumes you have a component called ListPost */}
+                    <ListPost allPosts={allPosts.slice(0, 3)} setPostsChange={setPostsChange} />
+                    {/* "See all" link */}
+                    <a href="/all-posts" className="text-blue-500 hover:underline self-center mt-4">See all</a>
+                  </div>
+                </div>
+      
+                {/* Update Credentials Form */}
+            <div className="mt-20 text-center border-b pb-12">
+              <h1 className="text-4xl font-medium text-gray-700">Update Credentials</h1>
+              <form onSubmit={onSubmitCredentials} className="flex flex-col items-center justify-center">
+                <div className="flex items-center my-2">
+                  <input
+                    ref={emailRef}
+                    type="text"
+                    className="text-gray-500"
+                    name="email"
+                    value={email}
+                    placeholder="Email"
+                    onChange={e => onChange(e)}
+                  />
+                  <button type="button" onClick={() => focusInput(emailRef)}>Change</button>
+                </div>
+                <div className="flex items-center my-2">
+                  <input
+                    ref={zipCodeRef}
+                    type="text"
+                    className="text-gray-500"
+                    name="zip_code"
+                    value={zip_code}
+                    placeholder="Zip Code"
+                    onChange={e => onChange(e)}
+                  />
+                  <button type="button" onClick={() => focusInput(zipCodeRef)}>Change</button>
+                </div>
+                <div className="flex items-center my-2">
+                  <input
+                    ref={usernameRef}
+                    type="text"
+                    className="text-gray-500"
+                    name="username"
+                    value={username}
+                    placeholder="Username"
+                    onChange={e => onChange(e)}
+                  />
+                  <button type="button" onClick={() => focusInput(usernameRef)}>Change</button>
+                </div>
+                <button
+                  type="submit"
+                  className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
+                >
+                  Update credentials
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      ) : (
-        <HomePage />
-      )
-    );
-  }
+      </div>
+    </div>
+  ) : (
+    <HomePage />
+  );
+}

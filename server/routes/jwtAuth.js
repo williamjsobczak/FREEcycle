@@ -59,4 +59,27 @@ router.post("/verify", authorize, (req, res) => {
   }
 });
 
+// Update user credentials
+router.put("/update-credentials", authorize, async (req, res) => {
+  const { username, email, zip_code } = req.body;
+  const user_id = req.user; // make sure this matches how you're setting it in authorize.js
+
+  try {
+    const updateUser = await pool.query(
+      "UPDATE users SET username = $1, email = $2, zip_code = $3 WHERE user_id = $4 RETURNING username, email, zip_code",
+      [username, email, zip_code, user_id]
+    );
+
+    if (updateUser.rows.length === 0) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.json(updateUser.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
 module.exports = router;

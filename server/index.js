@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 require('dotenv').config();
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const authorize = require("./middleware/authorize");
 
 const jwtSecret = process.env.jwtSecret; // Use environment variable
 
@@ -71,47 +72,35 @@ function generateJWTToken(userId) {
     return jwt.sign({ userId }, jwtSecret, { expiresIn: '1h' });
   }
 
-//update-zipcode
-app.post("/update-credentials", async (req, res) => {
+// Use the 'authorize' middleware to validate the JWT token and extract user information
+app.put("/update-credentials", authorize, async (req, res) => {
   try {
-      const { username, password, zip_code } = req.body;
+    // Extracting the user ID added to the req by the 'authorize' middleware
+    const user_id = req.user; // This assumes that the authorize middleware adds the user object with 'id' to the req
+    
+    // Extract user details from request body
+    const { username, email, zip_code } = req.body;
 
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
+    // Update user in the database
+    const updateUser = await pool.query(
+      "UPDATE users SET username = $1, email = $2, zip_code = $3 WHERE user_id = $4 RETURNING username, email, zip_code",
+      [username, email, zip_code, user_id]
+    );
 
-      // Insert user into the database
-      const newUser = await pool.query(
-          "INSERT INTO users (username, password, email, zip_code) VALUES ($1, $2, $3, $4) RETURNING *",
-          [username, hashedPassword, email, zip_code]
-      );
+    if (updateUser.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-      // Retrieve user_id based on username
-      const { rows } = await pool.query(
-          "SELECT user_id FROM users WHERE username = $1",
-          [username]
-      );
-
-      // Ensure a user_id is found
-      if (rows.length === 0) {
-          return res.status(404).json({ message: "User not found" });
-      }
-
-      const userId = rows[0].user_id;
-
-      // Generate JWT token with user_id
-      const jwtToken = generateJWTToken(userId);
-
-      // Log the token payload for testing
-      const decoded = jwt.verify(jwtToken, jwtSecret);
-      console.log("Token payload after registration:", decoded);
-
-      res.json({ jwtToken });
-
+    // Send back the updated user information
+    res.json(updateUser.rows[0]);
   } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
+
+
+
 
 
 // Registration
