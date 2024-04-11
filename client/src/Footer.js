@@ -10,7 +10,7 @@ export default function Footer() {
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">
               <a href="https://github.com/williamjsobczak/FREEcycle" class="flex items-center">
-                  <img src={freecyclelogo} class="h-8 me-3" alt="FREEcycle Logo" />
+                  <img src={freecyclelogo} class="h-14 me-3" alt="FREEcycle Logo" />
                   <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">FREEcycle</span>
               </a>
           </div>

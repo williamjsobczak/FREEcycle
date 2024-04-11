@@ -105,86 +105,77 @@ export default function ProfilePage({isAuthenticated, checkAuthenticated}) {
       }, [postsChange]);
 
       return isAuthenticated ? (
-        <div className="p-16">
-          <div className="p-8 bg-white shadow mt-24">
-            <div className="p-16">
-              <div className="p-8 bg-white shadow mt-24">
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  {/* Profile Section */}
-                  <div className="relative flex flex-col items-center">
-                    {/* Profile Image */}
-                    <div className="w-48 h-48 bg-indigo-100 rounded-full shadow-2xl flex items-center justify-center text-indigo-500">
-                      {/* Replace with actual profile image if available */}
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    {/* Profile Info */}
-                    <div className="mt-6 text-center">
-                      <h1 className="text-4xl font-medium text-gray-700">{username}</h1>
-                      <p className="font-light text-gray-600 mt-3">{email}</p>
-                    </div>
-                  </div>
-      
-                  {/* Posts Section */}
-                  <div className="mt-12 flex flex-col justify-center">
-                    {/* Display a list of posts - assumes you have a component called ListPost */}
-                    <ListPost allPosts={allPosts.slice(0, 3)} setPostsChange={setPostsChange} />
-                    {/* "See all" link */}
-                    <a href="/all-posts" className="text-blue-500 hover:underline self-center mt-4">See all</a>
-                  </div>
-                </div>
-      
-                {/* Update Credentials Form */}
-            <div className="mt-20 text-center border-b pb-12">
-              <h1 className="text-4xl font-medium text-gray-700">Update Credentials</h1>
-              <form onSubmit={onSubmitCredentials} className="flex flex-col items-center justify-center">
-                <div className="flex items-center my-2">
-                  <input
-                    ref={emailRef}
-                    type="text"
-                    className="text-gray-500"
-                    name="email"
-                    value={email}
-                    placeholder="Email"
-                    onChange={e => onChange(e)}
-                  />
-                  <button type="button" onClick={() => focusInput(emailRef)}>Change</button>
-                </div>
-                <div className="flex items-center my-2">
-                  <input
-                    ref={zipCodeRef}
-                    type="text"
-                    className="text-gray-500"
-                    name="zip_code"
-                    value={zip_code}
-                    placeholder="Zip Code"
-                    onChange={e => onChange(e)}
-                  />
-                  <button type="button" onClick={() => focusInput(zipCodeRef)}>Change</button>
-                </div>
-                <div className="flex items-center my-2">
-                  <input
-                    ref={usernameRef}
-                    type="text"
-                    className="text-gray-500"
-                    name="username"
-                    value={username}
-                    placeholder="Username"
-                    onChange={e => onChange(e)}
-                  />
-                  <button type="button" onClick={() => focusInput(usernameRef)}>Change</button>
-                </div>
-                <button
-                  type="submit"
-                  className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
-                >
-                  Update credentials
-                </button>
-              </form>
+        <div className="p-16 bg-white shadow mt-25">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Profile Section */}
+            <div className="relative flex flex-col items-center">
+              {/* Profile Image */}
+              <div className="w-70 h-70 bg-indigo-100 rounded-full shadow-2xl flex items-center justify-center text-indigo-500">
+                <img src="logo.png" alt="Profile" className="h-32 w-32" />
+              </div>
+              {/* Profile Info */}
+              <div className="mt-6 text-center">
+                <h1 className="text-4xl font-medium text-gray-700">{username}</h1>
+                <p className="font-light text-gray-600 mt-3">{email}</p>
+              </div>
+            </div>
+
+            {/* Posts Section */}
+            <div className="mt-12 flex flex-col justify-center">
+              {/* Display a list of posts - assumes you have a component called ListPost */}
+              <ListPost allPosts={allPosts.slice(0, 3)} setPostsChange={setPostsChange} />
+              {/* "See all" link */}
+              <a href="/all-posts" className="text-blue-500 hover:underline self-center mt-4">See all</a>
             </div>
           </div>
-        </div>
+
+          {/* Update Credentials Form */}
+      <div className="mt-20 text-center border-b pb-12">
+        <h1 className="text-4xl font-medium text-gray-700">Update Credentials</h1>
+        <form onSubmit={onSubmitCredentials} className="flex flex-col items-center justify-center">
+          <div className="flex items-center my-2">
+            <input
+              ref={emailRef}
+              type="text"
+              className="text-gray-500"
+              name="email"
+              value={email}
+              placeholder="Email"
+              onChange={e => onChange(e)}
+            />
+            <button type="button" onClick={() => focusInput(emailRef)}>Change</button>
+          </div>
+          <div className="flex items-center my-2">
+            <input
+              ref={zipCodeRef}
+              type="text"
+              className="text-gray-500"
+              name="zip_code"
+              value={zip_code}
+              placeholder="Zip Code"
+              onChange={e => onChange(e)}
+            />
+            <button type="button" onClick={() => focusInput(zipCodeRef)}>Change</button>
+          </div>
+          <div className="flex items-center my-2">
+            <input
+              ref={usernameRef}
+              type="text"
+              className="text-gray-500"
+              name="username"
+              value={username}
+              placeholder="Username"
+              onChange={e => onChange(e)}
+            />
+            <button type="button" onClick={() => focusInput(usernameRef)}>Change</button>
+          </div>
+          <button
+            type="submit"
+            className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
+          >
+            Update credentials
+          </button>
+        </form>
       </div>
     </div>
   ) : (
