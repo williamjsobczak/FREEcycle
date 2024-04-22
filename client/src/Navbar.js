@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import freecyclelogo from './assets/freecyclelogo.png'
+import freecyclelogo2 from './assets/logo2.png'
+
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
  
@@ -118,7 +120,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="logo2.png"
+                        src={freecyclelogo2}
                         alt="User Profile"
                       />
                     </Menu.Button>
@@ -137,7 +139,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             href="/profile"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-green-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                           >
                             {name} Profile
                           </a>
@@ -147,7 +149,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             href="/create_post"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                           >
                             Create Post
                           </a>
@@ -157,7 +159,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             onClick={(e) => logout(e)}
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                             href='/'
                           >
                             Sign out
