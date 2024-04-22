@@ -185,7 +185,7 @@ app.post("/create_post", async (req, res) => {
 app.get('/posts', async (req, res) => {
   try {
     // Query the database to retrieve all posts with their attached photos
-    const result = await pool.query('SELECT * FROM posts');
+    const result = await pool.query('SELECT * FROM posts LEFT JOIN users ON posts.user_id = users.user_id');
 
     // Check if any posts were found
     if (result.rows.length === 0) {
@@ -195,7 +195,9 @@ app.get('/posts', async (req, res) => {
     // Map over the posts and extract the necessary data
     const postsWithPhotos = result.rows.map(post => ({
       post_id: post.post_id,
+      post_zip: post.zip_code,
       title: post.title,
+      email: post.email,
       attached_photo: post.attached_photo.toString('base64') // Convert BYTEA to base64 string
     }));
 

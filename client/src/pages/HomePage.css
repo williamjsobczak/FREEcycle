@@ -10,7 +10,7 @@
   
   .photo-box {
     border: 4px solid #ccc; /* Adjust the border thickness */
-    padding: 10px;
+    padding: 30px;
     text-align: center;
     width: 400px; /* Adjust the width as needed */
     height: 400px; /* Adjust the height as needed */
@@ -19,13 +19,13 @@
   
   .photo-box img {
     max-width: calc(100% - 20px); /* Adjust the max-width to fit within the border */
-    max-height: calc(100% - 30px); /* Adjust the max-height to fit within the border */
-    margin-bottom: 10px; /* Add margin at the bottom of the photo */
+    max-height: calc(100% - 50px); /* Adjust the max-height to fit within the border */
+    margin-bottom: 15px; /* Add margin at the bottom of the photo */
   }
   
   .photo-title {
     position: absolute;
-    bottom: 5px; /* Adjust the distance from the bottom */
+    bottom: 10px; /* Adjust the distance from the bottom */
     left: 0;
     right: 0;
     font-size: 18px; /* Adjust the font size */
@@ -35,6 +35,18 @@
     padding: 5px; /* Optional: Add padding for better appearance */
     border-radius: 5px; /* Optional: Add border radius for better appearance */
   }
+  
+  .photo-email {
+    position: absolute;
+    bottom: 0px; /* Move the email line up within the boundary box */
+    left: 0;
+    right: 0;
+    font-size: 14px; /* Adjust the font size */
+    color: #777; /* Adjust the text color */
+  }
+  
+  
+  
   
   .center-image {
     display: block;
