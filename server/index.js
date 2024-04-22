@@ -179,6 +179,37 @@ app.post("/create_post", async (req, res) => {
     }
 });
 
+
+
+// Backend Route to Fetch All Posts with Attached Photos
+app.get('/posts', async (req, res) => {
+  try {
+    // Query the database to retrieve all posts with their attached photos
+    const result = await pool.query('SELECT * FROM posts');
+
+    // Check if any posts were found
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No posts found' });
+    }
+
+    // Map over the posts and extract the necessary data
+    const postsWithPhotos = result.rows.map(post => ({
+      post_id: post.post_id,
+      title: post.title,
+      attached_photo: post.attached_photo.toString('base64') // Convert BYTEA to base64 string
+    }));
+
+    // Send the posts with attached photos as the response
+    res.json(postsWithPhotos);
+  } catch (error) {
+    console.error('Error fetching posts:', error.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+
+
 app.listen(5000, () => {
     console.log("Server has started on port 5000");
 });

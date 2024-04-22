@@ -7,9 +7,8 @@ import { toast } from 'react-toastify';
  
 
 const navigation = [
-  { name: 'Home', href: '/', current: false },
-  { name: 'About', href: '/about', current: false },
-  { name: 'Post Item', href: '/create_post', current: false },
+  { name: 'My Feed', href: '/', current: false },
+  { name: 'Create Post', href: '/create_post', current: false },
 
 
 ]
