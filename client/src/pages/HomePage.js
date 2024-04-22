@@ -1,55 +1,69 @@
 import React, { useState, useEffect } from 'react';
+import './HomePage.css'; // Import the CSS file
 
 function HomePage() {
-  const [photos, setPhotos] = useState([]);
+  const [zipCode, setZipCode] = useState('');
+  const [posts, setPosts] = useState([]);
+
+  const getProfile = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/Posting/", {
+        method: "GET",
+        headers: { jwt_token: localStorage.token },
+      });
+
+      const parseData = await res.json();
+      if (parseData.length > 0) {
+        // Assuming parseData is an array with at least one element
+        setZipCode(parseData[0].zip_code); // Set the zip code state
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
-    // List of postIds for which you want to fetch images
-    const postIds = [6, 7, 9]; // Example: Replace with actual list of postIds
-
-    // Fetch photos for each postId from the backend when the component mounts
-    const fetchPhotos = async () => {
+    // Fetch posts based on the provided zip code when the component mounts
+    const fetchPosts = async () => {
       try {
-        const photoData = [];
-        for (const postId of postIds) {
-          const response = await fetch(`http://localhost:5000/images/${postId}`); // Adjust the endpoint URL
-          console.log(typeof response);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch photos for postId ${postId}`);
-          }
-          const dataBuffer = await response.buffer();
-          photoData.push(...dataBuffer); // Concatenate fetched photos for each postId
+        const response = await fetch(`http://localhost:5000/posts?zip_code=${zipCode}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
         }
-        setPhotos(photoData); // Set the fetched photos in state
+        const postData = await response.json();
+        setPosts(postData);
       } catch (error) {
-        console.error('Error fetching photos:', error.message);
+        console.error('Error fetching posts:', error.message);
       }
     };
 
-    fetchPhotos();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+    fetchPosts();
+  }, [zipCode]); // Trigger fetchPosts whenever zipCode changes
 
-  // Function to convert bytea data to a Blob
-  const byteaToBlob = (bytea) => {
-    const binaryString = window.atob(bytea);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    return new Blob([bytes], { type: 'image/*' }); // Adjust the type based on your image format
-  };
+  useEffect(() => {
+    getProfile(); // Fetch user profile information
+  }, []); // Run once on component mount
 
   return (
     <div>
-      <h1>Photos</h1>
+      <h1>Items Showing for Zip Code: {zipCode}</h1> {/* Display the zip code */}
       <div className="photo-container">
-        {/* Map over the photos and render each photo */}
-        {photos.map(photo => (
-          <div key={photo.id} className="photo-item">
-            {/* Render the image using the blob URL */}
-            <img src={URL.createObjectURL(byteaToBlob(photo.data))} alt={photo.alt} />
-          </div>
-        ))}
+        {/* Map over the posts and render each photo */}
+        {posts
+          .filter(post => post.post_zip === zipCode) // Filter posts based on user's zip code
+          .map(post => (
+            <div key={post.post_id} className="photo-item">
+              {/* Apply styles to create spacing and a box outline */}
+              <div className="photo-box">
+                {/* Display the title text above the image */}
+                <p className="photo-title">{post.title}</p>
+                {/* Render the image using the base64 data */}
+                <img src={`data:image/*;base64,${post.attached_photo}`} alt={post.title} className="center-image" />
+                {/* Display the email below the title */}
+                <p className="photo-email">Contact At: <a href={"mailto:" + post.email}>{post.email}</a></p>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

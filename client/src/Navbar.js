@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import freecyclelogo from './assets/freecyclelogo.png'
+import freecyclelogo2 from './assets/logo2.png'
+
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
  
 
 const navigation = [
-  { name: 'Home', href: '/', current: false },
-  { name: 'About', href: '/about', current: false },
-  { name: 'Post Item', href: '/create_post', current: false },
+  { name: 'My Feed', href: '/', current: false },
+  { name: 'Create Post', href: '/create_post', current: false },
+  { name: 'About Us', href: '/about', current: false },
 
 
 ]
@@ -76,13 +78,13 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start" >
                 <div className="flex flex-shrink-0 items-center" >
                   <img
-                    className="h-8 w-auto"
+                    className="h-12 w-auto"
                     src={freecyclelogo}
                     alt="FREEcycle"
                     
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden sm:ml-8 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -118,8 +120,8 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={freecyclelogo2}
+                        alt="User Profile"
                       />
                     </Menu.Button>
                   </div>
@@ -137,7 +139,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             href="/profile"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-green-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                           >
                             {name} Profile
                           </a>
@@ -147,7 +149,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             href="/create_post"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                           >
                             Create Post
                           </a>
@@ -157,7 +159,7 @@ export default function Navbar({ setAuth, isAuthenticated, checkAuthenticated })
                         {({ active }) => (
                           <a
                             onClick={(e) => logout(e)}
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-green-600')}
                             href='/'
                           >
                             Sign out

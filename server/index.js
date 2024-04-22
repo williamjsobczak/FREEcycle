@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 require('dotenv').config();
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const authorize = require("./middleware/authorize");
 
 const jwtSecret = process.env.jwtSecret; // Use environment variable
 
@@ -70,6 +71,37 @@ app.get('/images/:postId', async (req, res) => {
 function generateJWTToken(userId) {
     return jwt.sign({ userId }, jwtSecret, { expiresIn: '1h' });
   }
+
+// Use the 'authorize' middleware to validate the JWT token and extract user information
+app.put("/update-credentials", authorize, async (req, res) => {
+  try {
+    // Extracting the user ID added to the req by the 'authorize' middleware
+    const user_id = req.user; // This assumes that the authorize middleware adds the user object with 'id' to the req
+    
+    // Extract user details from request body
+    const { username, email, zip_code } = req.body;
+
+    // Update user in the database
+    const updateUser = await pool.query(
+      "UPDATE users SET username = $1, email = $2, zip_code = $3 WHERE user_id = $4 RETURNING username, email, zip_code",
+      [username, email, zip_code, user_id]
+    );
+
+    if (updateUser.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send back the updated user information
+    res.json(updateUser.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+
+
 
 // Registration
 app.post("/authentication/registration", async (req, res) => {
@@ -146,6 +178,39 @@ app.post("/create_post", async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
+
+
+// Backend Route to Fetch All Posts with Attached Photos
+app.get('/posts', async (req, res) => {
+  try {
+    // Query the database to retrieve all posts with their attached photos
+    const result = await pool.query('SELECT * FROM posts LEFT JOIN users ON posts.user_id = users.user_id');
+
+    // Check if any posts were found
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No posts found' });
+    }
+
+    // Map over the posts and extract the necessary data
+    const postsWithPhotos = result.rows.map(post => ({
+      post_id: post.post_id,
+      post_zip: post.zip_code,
+      title: post.title,
+      email: post.email,
+      attached_photo: post.attached_photo.toString('base64') // Convert BYTEA to base64 string
+    }));
+
+    // Send the posts with attached photos as the response
+    res.json(postsWithPhotos);
+  } catch (error) {
+    console.error('Error fetching posts:', error.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+
 
 app.listen(5000, () => {
     console.log("Server has started on port 5000");

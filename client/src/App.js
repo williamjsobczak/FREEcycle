@@ -65,9 +65,11 @@ function App() {
       <BrowserRouter>
       <Layout setAuth={setAuth} isAuthenticated={isAuthenticated} checkAuthenticated={checkAuthenticated}>
         <Routes>
-          <Route path="/" element={<HomePage />}>
-            <Route index element={<HomePage />} />
-          </Route>
+        <Route path="/" element={
+          isAuthenticated ? 
+            <HomePage isAuthenticated={isAuthenticated} checkAuthenticated={checkAuthenticated} /> : 
+            <SignInPage setAuth={setAuth} />
+            }  />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/create_post"  element={isAuthenticated ? 
             <CreatePostPage isAuthenticated={isAuthenticated} checkAuthenticated={checkAuthenticated} /> : 

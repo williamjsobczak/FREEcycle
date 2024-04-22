@@ -55,10 +55,13 @@ export default function RegistrationPage({ setAuth }) {
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
-      <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+      <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-4">
         <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-          <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-          <form onSubmit={onSubmitForm}>
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-green-600">
+            Registration
+          </h2>
+          <div className="mt-10">
+           <form onSubmit={onSubmitForm}>
             <input
               type="text"
               className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -95,13 +98,19 @@ export default function RegistrationPage({ setAuth }) {
             />
 
             <button
+                type="submit"
+                className="mt-8 flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              >
+                Create Account
+              </button>
+            {/* <button
               type="submit"
               className="block w-full text-center py-3 rounded bg-green text-black hover:bg-green-dark focus:outline-none my-1"
             >
               Create Account
-            </button>
+            </button> */}
 
-            <div className="text-center text-sm text-grey-dark mt-4">
+            {/* <div className="text-center text-sm text-grey-dark mt-4">
               By signing up, you agree to the{' '}
               <a
                 className="no-underline border-b border-grey-dark text-grey-dark"
@@ -116,14 +125,14 @@ export default function RegistrationPage({ setAuth }) {
               >
                 Privacy Policy
               </a>
-            </div>
+            </div> */}
           </form>
         </div>
-
-        <div className="text-grey-dark mt-6">
+</div>
+        <div className="text-green-600 mt-6">
           Already have an account?{' '}
           <a
-            className="no-underline border-b border-blue text-blue"
+            className="no-underline border-b border-blue text-green"
             href="/authentication/login"
           >
             Log in
