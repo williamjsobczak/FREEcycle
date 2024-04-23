@@ -32,9 +32,11 @@ const ListPost = ({ allPosts, setPostsChange }) => {
       <table className="table mt-5">
         <thead>
           <tr>
+            {/* Commented out Edit and Delete as they are not needed anymore
             <th>Description</th>
             <th>Edit</th>
             <th>Delete</th>
+            */}
           </tr>
         </thead>
         <tbody>
