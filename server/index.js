@@ -198,6 +198,7 @@ app.get('/posts', async (req, res) => {
       post_zip: post.zip_code,
       title: post.title,
       email: post.email,
+      userId: post.user_id,
       attached_photo: post.attached_photo.toString('base64') // Convert BYTEA to base64 string
     }));
 
@@ -210,6 +211,50 @@ app.get('/posts', async (req, res) => {
 });
 
 
+// Backend Route to Fetch Posts for a Specific User
+app.get('/posts/user', authorize, async (req, res) => {
+  try {
+    // Extracting the user ID from the JWT token added to the req by the 'authorize' middleware
+    const user_id = req.user; // Adjust this according to how your token payload is structured
+    
+    // Query the database to retrieve posts only for the logged-in user
+    const result = await pool.query('SELECT * FROM posts WHERE user_id = $1', [user_id]);
+
+    // Check if any posts were found
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No posts found for this user' });
+    }
+
+    // Send the posts as the response
+    res.json(result.rows.map(post => ({
+      ...post,
+      attached_photo: post.attached_photo.toString('base64') // Convert BYTEA to base64 string
+    })));
+  } catch (error) {
+    console.error('Error fetching posts for user:', error.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+// DELETE route to delete a post
+app.delete('/posts/:postId', authorize, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const user_id = req.user;
+
+    // Delete the post if it belongs to the user
+    const deleteQuery = 'DELETE FROM posts WHERE post_id = $1 AND user_id = $2 RETURNING *';
+    const result = await pool.query(deleteQuery, [postId, user_id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Post not found or not authorized to delete this post' });
+    }
+
+    res.json({ message: 'Post deleted' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 
 
 app.listen(5000, () => {
