@@ -42,38 +42,42 @@ function CreatePostPage({ checkAuthenticated }) {
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '0 auto' }}>
-      <h1>Create a New Post</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="title">Title:</label>
+    
+    <div className="flex justify-center items-start min-h-screen bg-gray-100 pt-20"> 
+      <div className="container mx-auto p-6 max-w-md bg-white shadow-md rounded-lg mt-12"> {/* Adjust marginTop to move up */}
+        <h1 className="text-2xl font-bold text-center mb-6">Create a New Post</h1>
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-4">
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title:</label>
           <input 
             type="text" 
             id="title" 
-            value={title} 
+            value={title}
             onChange={(e) => setTitle(e.target.value)} 
             required 
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="pic">Choose Image:</label>
+        <div>
+          <label htmlFor="pic" className="block text-sm font-medium text-gray-700">Choose Image:</label>
           <input 
             type="file" 
             id="pic" 
             onChange={(e) => setFile(e.target.files[0])} 
             required 
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-bg-green-600 w-full hover:file:bg-indigo-100"
           />
         </div>
-        <button type="submit" style={{ padding: '5px 10px', cursor: 'pointer' }}>Upload</button>
+        <button type="submit" className="w-full bg-green-600 w-full text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-green-600 w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Upload</button>
       </form>
-      {/* Display the uploaded item if it exists */}
       {uploadedItem && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Uploaded Item:</h3>
-          <p>Title: {uploadedItem.title}</p>
-          <img src={uploadedItem.imageUrl} alt="Uploaded" style={{ maxWidth: '100%' }} />
+        <div className="mt-6">
+          <h3 className="text-lg font-medium">Uploaded Item:</h3>
+          <p className="text-sm text-gray-800">{uploadedItem.title}</p>
+          <img src={uploadedItem.imageUrl} alt="Uploaded" className="mt-2 max-w-full h-auto" />
         </div>
       )}
+    </div>
     </div>
   );
 }
